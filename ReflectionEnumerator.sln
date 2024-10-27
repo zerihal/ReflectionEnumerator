@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReflectionEnumerator", "ReflectionEnumerator\ReflectionEnumerator.csproj", "{277B8CC1-CAA0-497D-AA51-60A4EB1F71E9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{277B8CC1-CAA0-497D-AA51-60A4EB1F71E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{277B8CC1-CAA0-497D-AA51-60A4EB1F71E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{277B8CC1-CAA0-497D-AA51-60A4EB1F71E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{277B8CC1-CAA0-497D-AA51-60A4EB1F71E9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B8989582-774E-4AD5-9993-FB7D1F3F0A8D}
+	EndGlobalSection
+EndGlobal
