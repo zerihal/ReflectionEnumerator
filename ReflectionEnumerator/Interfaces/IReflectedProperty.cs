@@ -2,6 +2,7 @@
 {
     public interface IReflectedProperty : IReflectedElement
     {
-        bool NonPublic { get; }
+        bool HasSetter { get; }
+        bool PublicSetter { get; }
     }
 }

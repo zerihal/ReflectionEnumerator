@@ -1,4 +1,5 @@
 ﻿using ReflectionEnumerator.Objects;
+using ReflectionEnumerator.Settings;
 
 namespace ReflectionEnumerator.Interfaces
 {
@@ -7,8 +8,10 @@ namespace ReflectionEnumerator.Interfaces
         string Name { get; }
         AssemblyObjectType ObjectType { get; }
         string AccessModifer { get; }
-        IEnumerable<IReflectedProperty> Properties { get; }
-        IEnumerable<IReflectedMethod> Methods { get; }
-        
+        IList<IReflectedProperty> Properties { get; }
+        IList<IReflectedMethod> Methods { get; }
+        IList<IReflectedField> Fields { get; }
+        IList<IReflectedEvent> Events { get; }
+        Task PopulateReflectedElements(ReflectorModifiers modifiers);
     }
 }

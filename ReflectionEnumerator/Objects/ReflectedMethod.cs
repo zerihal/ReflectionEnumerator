@@ -9,15 +9,14 @@ namespace ReflectionEnumerator.Objects
 
         public IList<IReflectedArg> ReflectedArgs { get; }
 
-        public ReflectedMethod(MethodInfo methodInfo)
+        public ReflectedMethod(MethodInfo methodInfo) : base(methodInfo)
         {
             ReflectedArgs = new List<IReflectedArg>();
-            PopulateMethodProperties(methodInfo);
+            PopulateMethodInfo(methodInfo);
         }
 
-        private void PopulateMethodProperties(MethodInfo methodInfo)
+        private void PopulateMethodInfo(MethodInfo methodInfo)
         {
-            Name = methodInfo.Name;
             ReturnType = methodInfo.ReturnType;
             NonPublic = !methodInfo.IsPublic;
 

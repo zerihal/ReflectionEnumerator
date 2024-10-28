@@ -4,6 +4,7 @@
     {
         Class,
         Interface,
-        Enum
+        Enum,
+        Other
     }
 }

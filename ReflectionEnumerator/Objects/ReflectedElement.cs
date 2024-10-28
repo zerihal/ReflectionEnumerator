@@ -1,4 +1,5 @@
 ﻿using ReflectionEnumerator.Interfaces;
+using System.Reflection;
 
 namespace ReflectionEnumerator.Objects
 {
@@ -11,5 +12,10 @@ namespace ReflectionEnumerator.Objects
         public Type? ReturnType { get; protected set; }
 
         public bool NonPublic { get; protected set; }
+
+        public ReflectedElement(MemberInfo member)
+        {
+            Name = member.Name;
+        }
     }
 }
