@@ -4,19 +4,17 @@ using System.Reflection;
 
 namespace ReflectionEnumerator
 {
-    public static class Interrogator
+    public class Interrogator
     {
-        private static BindingFlags BaseFlags = BindingFlags.Instance | BindingFlags.DeclaredOnly;
-        private static BindingFlags PublicFlags = BindingFlags.Public | BaseFlags;
-        private static BindingFlags NonPublicFlags = BindingFlags.NonPublic | BaseFlags;
-        private static BindingFlags AllFlags = BindingFlags.Public | BindingFlags.NonPublic | BaseFlags;
-
         /// <summary>
         /// 
         /// </summary>
-        public static IReflectorSettings Settings { get; set; }
+        public IReflectorSettings? Settings { get; set; }
 
-        public static IEnumerable<IReflectedMethod> GetMethods(object sourceObj)
+        // ToDos: Add methods to get interrogated assembly (IInterrogatedAssembly) as raw object and output stream (i.e. JSON / XML)
+        // Move the below into InterrogatedAssembly along with new methods for getting properties, fields, and events
+
+        private IEnumerable<IReflectedMethod> GetMethodsInternal(object sourceObj)
         {
             var methods = new List<IReflectedMethod>();
             var methodInfos = sourceObj.GetType().GetMethods(GetFlags());
@@ -29,18 +27,18 @@ namespace ReflectionEnumerator
             return methods;
         }
 
-        private static BindingFlags GetFlags()
+        private BindingFlags GetFlags()
         {
             if (Settings == null || Settings.IncludePublic && !Settings.IncludeNonPublic)
-                return PublicFlags;
+                return InterrogatorHelper.PublicFlags;
 
             if (Settings.IncludeNonPublic && !Settings.IncludePublic)
-                return NonPublicFlags;
+                return InterrogatorHelper.NonPublicFlags;
 
             if (Settings.IncludeAll)
-                return AllFlags;
+                return InterrogatorHelper.AllFlags;
 
-            throw new Exception("Invalid settings");
+            throw new InterrogatorException("Invalid settings");
         }
     }
 }
