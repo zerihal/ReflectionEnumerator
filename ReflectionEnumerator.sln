@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReflectionEnumerator", "ReflectionEnumerator\ReflectionEnumerator.csproj", "{277B8CC1-CAA0-497D-AA51-60A4EB1F71E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReflectionEnumerator", "ReflectionEnumerator\ReflectionEnumerator.csproj", "{277B8CC1-CAA0-497D-AA51-60A4EB1F71E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApp", "TestApp\TestApp.csproj", "{6A061443-6762-4B26-A6F1-33F30B8DF505}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{277B8CC1-CAA0-497D-AA51-60A4EB1F71E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{277B8CC1-CAA0-497D-AA51-60A4EB1F71E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{277B8CC1-CAA0-497D-AA51-60A4EB1F71E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A061443-6762-4B26-A6F1-33F30B8DF505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A061443-6762-4B26-A6F1-33F30B8DF505}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A061443-6762-4B26-A6F1-33F30B8DF505}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A061443-6762-4B26-A6F1-33F30B8DF505}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
