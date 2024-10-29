@@ -6,7 +6,6 @@ namespace ReflectionEnumerator.Interfaces
     {
         ReflectedElementType ElementType { get; }
         string Name { get; }
-        Type? ReturnType { get; }
         bool NonPublic { get; }
     }
 }

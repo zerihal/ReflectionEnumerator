@@ -9,6 +9,8 @@ namespace ReflectionEnumerator.Objects
 
         public IList<IReflectedArg> ReflectedArgs { get; }
 
+        public string ReturnType { get; private set; }
+
         public ReflectedMethod(MethodInfo methodInfo) : base(methodInfo)
         {
             ReflectedArgs = new List<IReflectedArg>();
@@ -17,7 +19,7 @@ namespace ReflectionEnumerator.Objects
 
         private void PopulateMethodInfo(MethodInfo methodInfo)
         {
-            ReturnType = methodInfo.ReturnType;
+            ReturnType = methodInfo.ReturnType.Name;
             NonPublic = !methodInfo.IsPublic;
 
             foreach (var arg in methodInfo.GetParameters())

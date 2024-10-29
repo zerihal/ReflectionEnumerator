@@ -8,6 +8,7 @@ namespace ReflectionEnumerator.Interfaces
         string Name { get; }
         Version Version { get; }
         IList<IAssemblyObject> AssemblyObjects { get; }
+        Task GetAssemblyObjectElementsAsync();
         T GenerateDocumentation<T>();
     }
 }

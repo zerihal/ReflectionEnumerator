@@ -9,8 +9,6 @@ namespace ReflectionEnumerator.Objects
 
         public string Name { get; protected set; }
 
-        public Type? ReturnType { get; protected set; }
-
         public bool NonPublic { get; protected set; }
 
         public ReflectedElement(MemberInfo member)

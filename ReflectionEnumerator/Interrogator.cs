@@ -1,5 +1,6 @@
 ﻿using ReflectionEnumerator.Interfaces;
 using ReflectionEnumerator.Objects;
+using ReflectionEnumerator.Settings;
 using System.Reflection;
 
 namespace ReflectionEnumerator
@@ -9,36 +10,26 @@ namespace ReflectionEnumerator
         /// <summary>
         /// 
         /// </summary>
-        public IReflectorSettings? Settings { get; set; }
+        public IReflectorSettings Settings { get; set; }
 
-        // ToDos: Add methods to get interrogated assembly (IInterrogatedAssembly) as raw object and output stream (i.e. JSON / XML)
-        // Move the below into InterrogatedAssembly along with new methods for getting properties, fields, and events
-
-        private IEnumerable<IReflectedMethod> GetMethodsInternal(object sourceObj)
+        public Interrogator(IReflectorSettings settings)
         {
-            var methods = new List<IReflectedMethod>();
-            var methodInfos = sourceObj.GetType().GetMethods(GetFlags());
-
-            foreach (var methodInfo in methodInfos)
-            {
-                methods.Add(new ReflectedMethod(methodInfo));
-            }
-
-            return methods;
+            Settings = settings;
         }
 
-        private BindingFlags GetFlags()
+        public Interrogator() 
         {
-            if (Settings == null || Settings.IncludePublic && !Settings.IncludeNonPublic)
-                return InterrogatorHelper.PublicFlags;
+            Settings = new ReflectorSettings(ReflectorModifiers.Public);
+        }
 
-            if (Settings.IncludeNonPublic && !Settings.IncludePublic)
-                return InterrogatorHelper.NonPublicFlags;
+        public IInterrogatedAssembly? InterrogateAssembly(string file)
+        {
+            if (Path.GetExtension(file)?.ToLower() == ".dll" && Assembly.LoadFile(file) is Assembly assembly)
+            {
+                return new InterrogatedAssembly(assembly, Settings.Modifiers);
+            }
 
-            if (Settings.IncludeAll)
-                return InterrogatorHelper.AllFlags;
-
-            throw new InterrogatorException("Invalid settings");
+            return null;
         }
     }
 }

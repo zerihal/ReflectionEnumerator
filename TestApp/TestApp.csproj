@@ -7,4 +7,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ReflectionEnumerator\ReflectionEnumerator.csproj" />
+  </ItemGroup>
+
 </Project>

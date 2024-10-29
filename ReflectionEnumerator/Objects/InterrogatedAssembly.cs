@@ -21,14 +21,14 @@ namespace ReflectionEnumerator.Objects
         {
             _modifiers = modifiers;
             AssemblyObjects = new List<IAssemblyObject>();
-            Name = assembly.FullName ?? string.Empty;
-            Version = assembly.GetName().Version ?? new Version(0, 0, 0, 0);
+            Name = assembly.GetName()?.Name ?? string.Empty;
+            Version = assembly.GetName()?.Version ?? new Version(0, 0, 0, 0);
 
             foreach (var aType in assembly.GetTypes())
                 AssemblyObjects.Add(new AssemblyObject(aType));
         }
 
-        public async void GetAssemblyObjectElementsAsync()
+        public async Task GetAssemblyObjectElementsAsync()
         {
             foreach (var assemblyObject in AssemblyObjects)
             {

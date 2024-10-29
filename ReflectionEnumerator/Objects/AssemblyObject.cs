@@ -46,7 +46,12 @@ namespace ReflectionEnumerator.Objects
                 Methods.Add(new ReflectedMethod(method));
 
             foreach (var field in _assemblyObjectType.GetFields(flags))
+            {
+                if (field.IsSpecialName || field.Name.Contains(">k__BackingField"))
+                    continue;
+
                 Fields.Add(new ReflectedField(field));
+            }
 
             foreach (var rEvent in _assemblyObjectType.GetEvents(flags))
                 Events.Add(new ReflectedEvent(rEvent));

@@ -7,6 +7,8 @@ namespace ReflectionEnumerator.Objects
     {
         public override ReflectedElementType ElementType => ReflectedElementType.Field;
 
+        public string FieldType { get; private set; }
+
         public ReflectedField(FieldInfo fieldInfo) : base(fieldInfo)
         {
             PopulateFieldInfo(fieldInfo);
@@ -14,7 +16,7 @@ namespace ReflectionEnumerator.Objects
 
         private void PopulateFieldInfo(FieldInfo fieldInfo)
         {
-            ReturnType = fieldInfo.FieldType;
+            FieldType = fieldInfo.FieldType.Name;
             NonPublic = !fieldInfo.IsPublic;
         }
     }

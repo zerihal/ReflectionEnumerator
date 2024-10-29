@@ -11,6 +11,8 @@ namespace ReflectionEnumerator.Objects
 
         public bool PublicSetter { get; private set; }
 
+        public string PropertyType { get; private set; }
+
         public ReflectedProperty(PropertyInfo propertyInfo) : base(propertyInfo)
         {
             PopulatePropertyInfo(propertyInfo);
@@ -20,12 +22,12 @@ namespace ReflectionEnumerator.Objects
         {
             if (propertyInfo.GetMethod is MethodInfo getter)
             {
-                ReturnType = getter.ReturnType;
+                PropertyType = getter.ReturnType.Name;
                 NonPublic = !getter.IsPublic;
             }
             else
             {
-                ReturnType = propertyInfo.PropertyType;
+                PropertyType = propertyInfo.PropertyType.Name;
             }
 
             if (propertyInfo.SetMethod is MethodInfo setter)

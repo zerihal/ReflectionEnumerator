@@ -4,5 +4,6 @@
     {
         bool HasSetter { get; }
         bool PublicSetter { get; }
+        string PropertyType { get; }
     }
 }

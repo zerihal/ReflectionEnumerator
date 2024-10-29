@@ -8,5 +8,6 @@ namespace ReflectionEnumerator.Interfaces
 {
     public interface IReflectedField : IReflectedElement
     {
+        string FieldType { get; }
     }
 }
