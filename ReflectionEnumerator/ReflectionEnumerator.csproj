@@ -4,6 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>Reflection Enumerator</Title>
+    <Authors>JPS</Authors>
+    <Company>$(Authors)</Company>
+    <Description>Creates an enumeration of reflected objects within a dll that can be easily consumed.</Description>
+    <RepositoryUrl>https://github.com/zerihal/ReflectionEnumerator</RepositoryUrl>
+    <NeutralLanguage>en-GB</NeutralLanguage>
+    <PackageId>Reflection.Enumerator</PackageId>
+    <Version>1.0.0-alpha.3</Version>
   </PropertyGroup>
 
 </Project>
