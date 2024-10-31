@@ -1,6 +1,7 @@
 ﻿using ReflectionEnumerator;
 using ReflectionEnumerator.EventArguments;
 using ReflectionEnumerator.Interfaces;
+using ReflectionEnumerator.Objects;
 using ReflectionEnumerator.Settings;
 
 internal class Program
@@ -34,6 +35,8 @@ internal class Program
             {
                 Console.WriteLine(assObj.Name);
             }
+
+            var serialisedJson = assembly.Serialize(SerializationType.JSON);
         }
     }
 }

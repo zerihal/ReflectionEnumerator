@@ -7,7 +7,7 @@ namespace ReflectionEnumerator.Objects
     {
         public string ArgName { get; }
 
-        public Type ArgType { get; }
+        public string ArgType { get; }
 
         public object? DefaultValue { get; }
 
@@ -18,8 +18,8 @@ namespace ReflectionEnumerator.Objects
         public ReflectedArg(ParameterInfo arg)
         {
             ArgName = arg.Name ?? string.Empty;
-            ArgType = arg.ParameterType;
-            DefaultValue = arg.DefaultValue;
+            ArgType = arg.ParameterType.Name;
+            DefaultValue = arg.HasDefaultValue ? arg.DefaultValue : null;
             IsOptional = arg.IsOptional;
             IsNullable = Nullable.GetUnderlyingType(arg.ParameterType) != null;           
         }

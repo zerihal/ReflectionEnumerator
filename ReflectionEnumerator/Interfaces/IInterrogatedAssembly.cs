@@ -1,4 +1,6 @@
 ﻿using ReflectionEnumerator.EventArguments;
+using ReflectionEnumerator.Objects;
+using System.Data;
 
 namespace ReflectionEnumerator.Interfaces
 {
@@ -9,6 +11,6 @@ namespace ReflectionEnumerator.Interfaces
         Version Version { get; }
         IList<IAssemblyObject> AssemblyObjects { get; }
         Task GetAssemblyObjectElementsAsync();
-        T GenerateDocumentation<T>();
+        string Serialize(SerializationType format);
     }
 }

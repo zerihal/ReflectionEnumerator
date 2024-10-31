@@ -2,12 +2,18 @@
 using ReflectionEnumerator.Interfaces;
 using ReflectionEnumerator.Settings;
 using System.Reflection;
+using System.Text.Encodings.Web;
+using System.Text.Json;
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace ReflectionEnumerator.Objects
 {
     public class InterrogatedAssembly : IInterrogatedAssembly
     {
         private ReflectorModifiers _modifiers;
+        private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions() { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
+        private readonly XmlWriterSettings _xmlOptions = new XmlWriterSettings() { Indent = true };
 
         public event EventHandler<ReflectionCompleteEventArgs> ReflectionComplete;
 
@@ -38,9 +44,27 @@ namespace ReflectionEnumerator.Objects
             OnReflectionComplete(new ReflectionCompleteEventArgs(AssemblyObjects.Count));
         }
 
-        public T GenerateDocumentation<T>()
+        public string Serialize(SerializationType format)
         {
-            throw new NotImplementedException();
+            switch (format)
+            {
+                case SerializationType.JSON:
+                    return JsonSerializer.Serialize(this, _jsonOptions);
+
+                case SerializationType.XML:
+                    var xmlSerializer = new XmlSerializer(typeof(IInterrogatedAssembly));
+                    using (var sw = new StringWriter())
+                    {
+                        using (var xmlWriter = XmlWriter.Create(sw, _xmlOptions))
+                        {
+                            xmlSerializer.Serialize(xmlWriter, this);
+                            return sw.ToString();
+                        }
+                    }
+
+                default:
+                    return string.Empty;
+            }
         }
 
         private void OnReflectionComplete(ReflectionCompleteEventArgs e) => ReflectionComplete?.Invoke(this, e);
