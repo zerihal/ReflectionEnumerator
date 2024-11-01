@@ -15,5 +15,7 @@ namespace ReflectionEnumerator.Objects
         {
             Name = member.Name;
         }
+
+        public ReflectedElement() { }
     }
 }

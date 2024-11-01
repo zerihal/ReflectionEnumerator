@@ -19,13 +19,11 @@ namespace ReflectionEnumerator.Objects
 
         private void PopulateMethodInfo(MethodInfo methodInfo)
         {
-            ReturnType = methodInfo.ReturnType.Name;
+            ReturnType = InterrogatorHelper.GetTypeName(methodInfo.ReturnType);
             NonPublic = !methodInfo.IsPublic;
 
             foreach (var arg in methodInfo.GetParameters())
-            {
                 ReflectedArgs.Add(new ReflectedArg(arg));
-            }
         }
     }
 }

@@ -5,6 +5,7 @@
         Method,
         Property,
         Field,
-        Event
+        Event,
+        Constructor
     }
 }

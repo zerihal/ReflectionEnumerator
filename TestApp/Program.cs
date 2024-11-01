@@ -9,7 +9,7 @@ internal class Program
     private static void Main(string[] args)
     {
         var interrogator = new Interrogator(new ReflectorSettings(ReflectorModifiers.All));
-        var interrogatedAssembly = interrogator.InterrogateAssembly(@"C:\Temp\AES Encryption Tester\AESEncryptionTestUtils.dll");
+        var interrogatedAssembly = interrogator.InterrogateAssembly(@"D:\source\AESEncryptionTester\AESEncryptionTestUtils\bin\Debug\net8.0\AESEncryptionTestUtils.dll");
 
         if (interrogatedAssembly != null )
         {

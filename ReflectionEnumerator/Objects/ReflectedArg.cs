@@ -18,7 +18,7 @@ namespace ReflectionEnumerator.Objects
         public ReflectedArg(ParameterInfo arg)
         {
             ArgName = arg.Name ?? string.Empty;
-            ArgType = arg.ParameterType.Name;
+            ArgType = InterrogatorHelper.GetTypeName(arg.ParameterType);
             DefaultValue = arg.HasDefaultValue ? arg.DefaultValue : null;
             IsOptional = arg.IsOptional;
             IsNullable = Nullable.GetUnderlyingType(arg.ParameterType) != null;           

@@ -1,4 +1,5 @@
 ﻿using ReflectionEnumerator.Interfaces;
+using System.Diagnostics;
 using System.Reflection;
 
 namespace ReflectionEnumerator.Objects
@@ -22,12 +23,13 @@ namespace ReflectionEnumerator.Objects
         {
             if (propertyInfo.GetMethod is MethodInfo getter)
             {
-                PropertyType = getter.ReturnType.Name;
+                PropertyType = InterrogatorHelper.GetTypeName(getter.ReturnType);
                 NonPublic = !getter.IsPublic;
             }
             else
             {
-                PropertyType = propertyInfo.PropertyType.Name;
+                Debug.WriteLine("Warning: Property does not have a get method");
+                PropertyType = InterrogatorHelper.GetTypeName(propertyInfo.PropertyType);
             }
 
             if (propertyInfo.SetMethod is MethodInfo setter)

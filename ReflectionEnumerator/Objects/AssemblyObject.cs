@@ -21,6 +21,8 @@ namespace ReflectionEnumerator.Objects
 
         public IList<IReflectedEvent> Events { get; }
 
+        public IList<IReflectedConstructor> Constructors { get; }
+
         public AssemblyObject(Type type)
         {
             _assemblyObjectType = type;
@@ -28,6 +30,7 @@ namespace ReflectionEnumerator.Objects
             Methods = new List<IReflectedMethod>();
             Fields = new List<IReflectedField>();
             Events = new List<IReflectedEvent>();
+            Constructors = new List<IReflectedConstructor>();
 
             Name = type.Name;
             ObjectType = InterrogatorHelper.GetAssemblyObjectType(_assemblyObjectType, out var modifier);
@@ -43,7 +46,12 @@ namespace ReflectionEnumerator.Objects
                 Properties.Add(new ReflectedProperty(property));
 
             foreach (var method in _assemblyObjectType.GetMethods(flags))
+            {
+                if (method.IsSpecialName) 
+                    continue;
+
                 Methods.Add(new ReflectedMethod(method));
+            }
 
             foreach (var field in _assemblyObjectType.GetFields(flags))
             {
@@ -55,6 +63,12 @@ namespace ReflectionEnumerator.Objects
 
             foreach (var rEvent in _assemblyObjectType.GetEvents(flags))
                 Events.Add(new ReflectedEvent(rEvent));
+
+            if (ObjectType == AssemblyObjectType.Class)
+            {
+                foreach (var ctr in _assemblyObjectType.GetConstructors(flags))
+                    Constructors.Add(new ReflectedConstructor(ctr));
+            }
 
             await Task.CompletedTask;
         }

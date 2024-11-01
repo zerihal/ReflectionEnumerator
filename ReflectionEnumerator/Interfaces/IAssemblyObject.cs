@@ -12,6 +12,7 @@ namespace ReflectionEnumerator.Interfaces
         IList<IReflectedMethod> Methods { get; }
         IList<IReflectedField> Fields { get; }
         IList<IReflectedEvent> Events { get; }
+        IList<IReflectedConstructor> Constructors { get; }
         Task PopulateReflectedElements(ReflectorModifiers modifiers);
     }
 }
