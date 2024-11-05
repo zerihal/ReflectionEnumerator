@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ReflectionEnumerator.Interfaces
-{
+﻿namespace ReflectionEnumerator.Interfaces
+{ 
+    /// <summary>
+    /// Reflected field.
+    /// </summary>
     public interface IReflectedField : IReflectedElement
     {
+        /// <summary>
+        /// Field type as string.
+        /// </summary>
         string FieldType { get; }
     }
 }

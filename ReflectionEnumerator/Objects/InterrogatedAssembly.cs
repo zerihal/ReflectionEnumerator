@@ -5,22 +5,26 @@ using System.Reflection;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Xml;
-using System.Xml.Serialization;
 
 namespace ReflectionEnumerator.Objects
 {
+    /// <inheritdoc/>
     public class InterrogatedAssembly : IInterrogatedAssembly
     {
         private ReflectorModifiers _modifiers;
         private readonly JsonSerializerOptions _jsonOptions = new JsonSerializerOptions() { WriteIndented = true, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping };
         private readonly XmlWriterSettings _xmlOptions = new XmlWriterSettings() { Indent = true };
 
+        /// <inheritdoc/>
         public event EventHandler<ReflectionCompleteEventArgs> ReflectionComplete;
 
+        /// <inheritdoc/>
         public string Name { get; }
 
+        /// <inheritdoc/>
         public Version Version { get; }
 
+        /// <inheritdoc/>
         public IList<IAssemblyObject> AssemblyObjects { get; }
 
         public InterrogatedAssembly(Assembly assembly, ReflectorModifiers modifiers)
@@ -34,6 +38,7 @@ namespace ReflectionEnumerator.Objects
                 AssemblyObjects.Add(new AssemblyObject(aType));
         }
 
+        /// <inheritdoc/>
         public async Task GetAssemblyObjectElementsAsync()
         {
             foreach (var assemblyObject in AssemblyObjects)
@@ -44,6 +49,7 @@ namespace ReflectionEnumerator.Objects
             OnReflectionComplete(new ReflectionCompleteEventArgs(AssemblyObjects.Count));
         }
 
+        /// <inheritdoc/>
         public string Serialize(SerializationType format)
         {
             switch (format)
@@ -51,16 +57,8 @@ namespace ReflectionEnumerator.Objects
                 case SerializationType.JSON:
                     return JsonSerializer.Serialize(this, _jsonOptions);
 
-                case SerializationType.XML:
-                    var xmlSerializer = new XmlSerializer(typeof(IInterrogatedAssembly));
-                    using (var sw = new StringWriter())
-                    {
-                        using (var xmlWriter = XmlWriter.Create(sw, _xmlOptions))
-                        {
-                            xmlSerializer.Serialize(xmlWriter, this);
-                            return sw.ToString();
-                        }
-                    }
+                case SerializationType.XML: // Not yet implemented (may remove)
+                    throw new NotImplementedException();
 
                 default:
                     return string.Empty;

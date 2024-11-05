@@ -3,24 +3,34 @@ using ReflectionEnumerator.Settings;
 
 namespace ReflectionEnumerator.Objects
 {
+    /// <inheritdoc/>
     public class AssemblyObject : IAssemblyObject
     {
+        /// <inheritdoc/>
         private Type _assemblyObjectType;
 
+        /// <inheritdoc/>
         public string Name { get; }
 
+        /// <inheritdoc/>
         public AssemblyObjectType ObjectType { get; }
 
+        /// <inheritdoc/>
         public string AccessModifer { get; }
 
+        /// <inheritdoc/>
         public IList<IReflectedProperty> Properties { get; }
 
+        /// <inheritdoc/>
         public IList<IReflectedMethod> Methods { get; }
 
+        /// <inheritdoc/>
         public IList<IReflectedField> Fields { get; }
 
+        /// <inheritdoc/>
         public IList<IReflectedEvent> Events { get; }
 
+        /// <inheritdoc/>
         public IList<IReflectedConstructor> Constructors { get; }
 
         public AssemblyObject(Type type)
@@ -37,6 +47,7 @@ namespace ReflectionEnumerator.Objects
             AccessModifer = modifier; 
         }
 
+        /// <inheritdoc/>
         public async Task PopulateReflectedElements(ReflectorModifiers modifiers)
         {
             var flags = modifiers == ReflectorModifiers.Public ? InterrogatorHelper.PublicFlags : 

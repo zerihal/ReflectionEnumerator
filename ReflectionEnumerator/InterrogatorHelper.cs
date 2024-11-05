@@ -10,6 +10,12 @@ namespace ReflectionEnumerator
         internal static BindingFlags NonPublicFlags => BindingFlags.NonPublic | BaseFlags;
         internal static BindingFlags AllFlags => BindingFlags.Public | BindingFlags.NonPublic | BaseFlags;
 
+        /// <summary>
+        /// Gets the assembly object type, including access modifier.
+        /// </summary>
+        /// <param name="type">Object type.</param>
+        /// <param name="modifier">Access modifier.</param>
+        /// <returns>Assembly object type.</returns>
         internal static AssemblyObjectType GetAssemblyObjectType(Type type, out string modifier)
         {
             if (type.IsPublic)
@@ -42,8 +48,19 @@ namespace ReflectionEnumerator
             return AssemblyObjectType.Other;
         }
 
+        /// <summary>
+        /// Gets type name as a string.
+        /// </summary>
+        /// <param name="type">System type.</param>
+        /// <returns>Type name as string.</returns>
         internal static string GetTypeName(Type type) => GetTypeName(type, out _);
 
+        /// <summary>
+        /// Gets type name as a string and whether this is a generic type.
+        /// </summary>
+        /// <param name="type">System type.</param>
+        /// <param name="isGenericType">True if generic type, otherwise false.</param>
+        /// <returns>Type name as string.</returns>
         internal static string GetTypeName(Type type, out bool isGenericType)
         {
             var typeName = type.Name;

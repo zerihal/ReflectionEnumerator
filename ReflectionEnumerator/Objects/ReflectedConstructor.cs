@@ -3,15 +3,19 @@ using ReflectionEnumerator.Interfaces;
 
 namespace ReflectionEnumerator.Objects
 {
+    /// <inheritdoc/>
     public class ReflectedConstructor : ReflectedElement, IReflectedConstructor
     {
         private ConstructorInfo _constructorInfo;
         private bool _hasDeclaringType;
 
+        /// <inheritdoc/>
         public override ReflectedElementType ElementType => ReflectedElementType.Constructor;
 
+        /// <inheritdoc/>
         public IList<IReflectedArg> ReflectedArgs { get; }
 
+        /// <inheritdoc/>
         public string ObjectType { get; private set; }
 
         public ReflectedConstructor(ConstructorInfo ctrInfo) : base()
@@ -32,19 +36,13 @@ namespace ReflectionEnumerator.Objects
             PopulateConstructorInfo();
         }
 
-        private void PopulateConstructorInfo()
+        /// <inheritdoc/>
+        public Type? GetObjectType()
         {
-            if (_constructorInfo.ReflectedType is Type type)
-                ObjectType = InterrogatorHelper.GetTypeName(type);
-            else
-                ObjectType = _hasDeclaringType ? Name : InterrogatorHelper.GetTypeName(_constructorInfo.GetType()); 
-
-            NonPublic = !_constructorInfo.IsPublic;
-
-            foreach (var arg in _constructorInfo.GetParameters())
-                ReflectedArgs.Add(new ReflectedArg(arg));
+            return _constructorInfo.ReflectedType ?? (_hasDeclaringType ? _constructorInfo.DeclaringType : null);
         }
 
+        /// <inheritdoc/>
         public object? CreateInstance(object[]? parameters, out InstanceError creationError)
         {
             object? rtnObj = null;
@@ -62,6 +60,19 @@ namespace ReflectionEnumerator.Objects
             }
 
             return rtnObj;
+        }
+
+        private void PopulateConstructorInfo()
+        {
+            if (_constructorInfo.ReflectedType is Type type)
+                ObjectType = InterrogatorHelper.GetTypeName(type);
+            else
+                ObjectType = _hasDeclaringType ? Name : InterrogatorHelper.GetTypeName(_constructorInfo.GetType()); 
+
+            NonPublic = !_constructorInfo.IsPublic;
+
+            foreach (var arg in _constructorInfo.GetParameters())
+                ReflectedArgs.Add(new ReflectedArg(arg));
         }
     }
 }

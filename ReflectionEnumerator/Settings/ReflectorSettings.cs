@@ -2,8 +2,10 @@
 
 namespace ReflectionEnumerator.Settings
 {
+    /// <inheritdoc/>
     public class ReflectorSettings : IReflectorSettings
     {
+        /// <inheritdoc/>
         public ReflectorModifiers Modifiers { get; set; }
 
         public ReflectorSettings() { }

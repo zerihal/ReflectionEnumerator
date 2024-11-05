@@ -4,14 +4,19 @@ using System.Reflection;
 
 namespace ReflectionEnumerator.Objects
 {
+    /// <inheritdoc/>
     public class ReflectedProperty : ReflectedElement, IReflectedProperty
     {
+        /// <inheritdoc/>
         public override ReflectedElementType ElementType => ReflectedElementType.Property;
 
+        /// <inheritdoc/>
         public bool HasSetter { get; private set; }
 
+        /// <inheritdoc/>
         public bool PublicSetter { get; private set; }
 
+        /// <inheritdoc/>
         public string PropertyType { get; private set; }
 
         public ReflectedProperty(PropertyInfo propertyInfo) : base(propertyInfo)

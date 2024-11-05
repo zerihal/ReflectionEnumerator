@@ -3,16 +3,22 @@ using System.Reflection;
 
 namespace ReflectionEnumerator.Objects
 {
+    /// <inheritdoc/>
     public class ReflectedArg : IReflectedArg
     {
+        /// <inheritdoc/>
         public string ArgName { get; }
 
+        /// <inheritdoc/>
         public string ArgType { get; }
 
+        /// <inheritdoc/>
         public object? DefaultValue { get; }
 
+        /// <inheritdoc/>
         public bool IsOptional { get; }
 
+        /// <inheritdoc/>
         public bool IsNullable { get; }
 
         public ReflectedArg(ParameterInfo arg)
