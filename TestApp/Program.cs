@@ -6,10 +6,13 @@ using ReflectionEnumerator.Settings;
 
 internal class Program
 {
+    // Add in full path of assembly that is to be tested ...
+    private static string TestAssembly = @"";
+
     private static void Main(string[] args)
     {
         var interrogator = new Interrogator(new ReflectorSettings(ReflectorModifiers.All));
-        var interrogatedAssembly = interrogator.InterrogateAssembly(@"C:\Temp\AES Encryption Tester\AESEncryptionTestUtils.dll");
+        var interrogatedAssembly = interrogator.InterrogateAssembly(TestAssembly);
 
         if (interrogatedAssembly != null )
         {

@@ -12,6 +12,10 @@ namespace ReflectionEnumerator.Objects
         /// <inheritdoc/>
         public string FieldType { get; private set; }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="fieldInfo">Field info.</param>
         public ReflectedField(FieldInfo fieldInfo) : base(fieldInfo)
         {
             PopulateFieldInfo(fieldInfo);
@@ -19,7 +23,7 @@ namespace ReflectionEnumerator.Objects
 
         private void PopulateFieldInfo(FieldInfo fieldInfo)
         {
-            FieldType = InterrogatorHelper.GetTypeName(fieldInfo.FieldType);
+            FieldType = GetType(fieldInfo);
             NonPublic = !fieldInfo.IsPublic;
         }
     }

@@ -19,6 +19,10 @@ namespace ReflectionEnumerator.Objects
         /// <inheritdoc/>
         public string PropertyType { get; private set; }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="propertyInfo">Property info.</param>
         public ReflectedProperty(PropertyInfo propertyInfo) : base(propertyInfo)
         {
             PopulatePropertyInfo(propertyInfo);
@@ -27,15 +31,11 @@ namespace ReflectionEnumerator.Objects
         private void PopulatePropertyInfo(PropertyInfo propertyInfo)
         {
             if (propertyInfo.GetMethod is MethodInfo getter)
-            {
-                PropertyType = InterrogatorHelper.GetTypeName(getter.ReturnType);
                 NonPublic = !getter.IsPublic;
-            }
             else
-            {
                 Debug.WriteLine("Warning: Property does not have a get method");
-                PropertyType = InterrogatorHelper.GetTypeName(propertyInfo.PropertyType);
-            }
+
+            PropertyType = GetType(propertyInfo);
 
             if (propertyInfo.SetMethod is MethodInfo setter)
             {

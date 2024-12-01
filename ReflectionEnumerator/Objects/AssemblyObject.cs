@@ -33,6 +33,10 @@ namespace ReflectionEnumerator.Objects
         /// <inheritdoc/>
         public IList<IReflectedConstructor> Constructors { get; }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="type">Assembly object type (e.g. class, interface, etc).</param>
         public AssemblyObject(Type type)
         {
             _assemblyObjectType = type;
@@ -58,7 +62,7 @@ namespace ReflectionEnumerator.Objects
 
             foreach (var method in _assemblyObjectType.GetMethods(flags))
             {
-                if (method.IsSpecialName) 
+                if (method.IsSpecialName)
                     continue;
 
                 Methods.Add(new ReflectedMethod(method));
@@ -79,9 +83,17 @@ namespace ReflectionEnumerator.Objects
             {
                 foreach (var ctr in _assemblyObjectType.GetConstructors(flags))
                     Constructors.Add(new ReflectedConstructor(ctr));
+
+                // ToDo - If there are no declared constructors then we can assume it is a default ctr
             }
 
             await Task.CompletedTask;
         }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        /// <returns>Name of the current object.</returns>
+        public override string ToString() => Name;
     }
 }

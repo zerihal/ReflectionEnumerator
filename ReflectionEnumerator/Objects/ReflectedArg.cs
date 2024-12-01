@@ -21,10 +21,23 @@ namespace ReflectionEnumerator.Objects
         /// <inheritdoc/>
         public bool IsNullable { get; }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="arg">Parameter info.</param>
         public ReflectedArg(ParameterInfo arg)
         {
             ArgName = arg.Name ?? string.Empty;
-            ArgType = InterrogatorHelper.GetTypeName(arg.ParameterType);
+
+            try
+            {
+                ArgType = InterrogatorHelper.GetTypeName(arg.ParameterType);
+            }
+            catch
+            {
+                ArgType = "Object (undetermined)";
+            }
+            
             DefaultValue = arg.HasDefaultValue ? arg.DefaultValue : null;
             IsOptional = arg.IsOptional;
             IsNullable = Nullable.GetUnderlyingType(arg.ParameterType) != null;           

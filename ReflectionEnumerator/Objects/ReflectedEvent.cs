@@ -9,6 +9,10 @@ namespace ReflectionEnumerator.Objects
         /// <inheritdoc/>
         public override ReflectedElementType ElementType => ReflectedElementType.Event;
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="eventInfo">Event info.</param>
         public ReflectedEvent(EventInfo eventInfo) : base(eventInfo) { }
     }
 }

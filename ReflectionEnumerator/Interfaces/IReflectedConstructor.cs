@@ -18,12 +18,6 @@ namespace ReflectionEnumerator.Interfaces
         string ObjectType { get; }
 
         /// <summary>
-        /// Gets the constructor object type.
-        /// </summary>
-        /// <returns></returns>
-        Type? GetObjectType();
-
-        /// <summary>
         /// Creates an instance of the object associated with this constructor.
         /// </summary>
         /// <param name="parameters">Constructor parameters.</param>

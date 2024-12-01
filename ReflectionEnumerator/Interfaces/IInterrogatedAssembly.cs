@@ -1,13 +1,13 @@
 ﻿using ReflectionEnumerator.EventArguments;
 using ReflectionEnumerator.Objects;
-using System.Data;
+using ReflectionEnumerator.Objects.Records;
 
 namespace ReflectionEnumerator.Interfaces
 {
     /// <summary>
     /// Iterrogated assembly object.
     /// </summary>
-    public interface IInterrogatedAssembly
+    public partial interface IInterrogatedAssembly
     {
         /// <summary>
         /// Event for reflection completion following call to get assembly object elements.
@@ -28,6 +28,12 @@ namespace ReflectionEnumerator.Interfaces
         /// Contained assembly objects.
         /// </summary>
         IList<IAssemblyObject> AssemblyObjects { get; }
+
+        /// <summary>
+        /// Gets assembly load error (if no error then this will be indicated in the record).
+        /// </summary>
+        /// <returns>Assembly load error record.</returns>
+        AssemblyLoadError LoadError();
 
         /// <summary>
         /// Performs reflection on all contained assembly objects.

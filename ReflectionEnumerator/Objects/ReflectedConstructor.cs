@@ -18,6 +18,10 @@ namespace ReflectionEnumerator.Objects
         /// <inheritdoc/>
         public string ObjectType { get; private set; }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="ctrInfo">Constructor info.</param>
         public ReflectedConstructor(ConstructorInfo ctrInfo) : base()
         {
             _constructorInfo = ctrInfo;
@@ -34,12 +38,6 @@ namespace ReflectionEnumerator.Objects
 
             ReflectedArgs = new List<IReflectedArg>();
             PopulateConstructorInfo();
-        }
-
-        /// <inheritdoc/>
-        public Type? GetObjectType()
-        {
-            return _constructorInfo.ReflectedType ?? (_hasDeclaringType ? _constructorInfo.DeclaringType : null);
         }
 
         /// <inheritdoc/>
@@ -64,10 +62,10 @@ namespace ReflectionEnumerator.Objects
 
         private void PopulateConstructorInfo()
         {
-            if (_constructorInfo.ReflectedType is Type type)
-                ObjectType = InterrogatorHelper.GetTypeName(type);
+            if (_constructorInfo.ReflectedType == null && _hasDeclaringType)
+                ObjectType = Name;
             else
-                ObjectType = _hasDeclaringType ? Name : InterrogatorHelper.GetTypeName(_constructorInfo.GetType()); 
+                ObjectType = GetType(_constructorInfo);
 
             NonPublic = !_constructorInfo.IsPublic;
 

@@ -4,9 +4,12 @@ namespace ReflectionEnumerator.Test
 {
     public class InterrogatorTests
     {
+        private Interrogator _interrogator;
+
         [SetUp]
         public void Setup()
         {
+            _interrogator = new Interrogator(new ReflectorSettings(ReflectorModifiers.All));
         }
 
         [Test]

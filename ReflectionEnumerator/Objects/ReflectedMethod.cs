@@ -15,6 +15,10 @@ namespace ReflectionEnumerator.Objects
         /// <inheritdoc/>
         public string ReturnType { get; private set; }
 
+        /// <summary>
+        /// Default constructor.
+        /// </summary>
+        /// <param name="methodInfo">Method info.</param>
         public ReflectedMethod(MethodInfo methodInfo) : base(methodInfo)
         {
             ReflectedArgs = new List<IReflectedArg>();
@@ -23,7 +27,7 @@ namespace ReflectionEnumerator.Objects
 
         private void PopulateMethodInfo(MethodInfo methodInfo)
         {
-            ReturnType = InterrogatorHelper.GetTypeName(methodInfo.ReturnType);
+            ReturnType = GetType(methodInfo);
             NonPublic = !methodInfo.IsPublic;
 
             foreach (var arg in methodInfo.GetParameters())

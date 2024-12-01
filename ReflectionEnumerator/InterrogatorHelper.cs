@@ -1,4 +1,5 @@
-﻿using ReflectionEnumerator.Objects;
+﻿using ReflectionEnumerator.Exceptions;
+using ReflectionEnumerator.Objects;
 using System.Reflection;
 
 namespace ReflectionEnumerator
@@ -46,6 +47,44 @@ namespace ReflectionEnumerator
                 return AssemblyObjectType.Class;
 
             return AssemblyObjectType.Other;
+        }
+
+        /// <summary>
+        /// Gets the type name for the member
+        /// </summary>
+        /// <param name="memberInfo"></param>
+        /// <param name="typeLoadException"></param>
+        /// <returns></returns>
+        internal static string GetTypeName(MemberInfo memberInfo, out bool typeLoadException)
+        {
+            typeLoadException = false;
+
+            try
+            {
+                switch (memberInfo)
+                {
+                    case FieldInfo fieldInfo:
+                        return GetTypeName(fieldInfo.FieldType);
+
+                    case PropertyInfo propertyInfo:
+                        return propertyInfo.GetMethod is MethodInfo getter ? GetTypeName(getter.ReturnType) : GetTypeName(propertyInfo.PropertyType);
+
+                    case MethodInfo methodInfo:
+                        return GetTypeName(methodInfo.ReturnType);
+
+                    case ConstructorInfo constructorInfo:
+                        return GetTypeName(constructorInfo.ReflectedType ?? constructorInfo.DeclaringType ?? typeof(object));
+
+                    default:
+                        // Member type is not specifed as one recognised by this helper method so throw exception.
+                        throw new UnknownMemberException(memberInfo);
+                }
+            }
+            catch
+            {
+                typeLoadException = true;
+                return GetTypeName(typeof(object));
+            }          
         }
 
         /// <summary>
