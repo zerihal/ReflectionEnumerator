@@ -54,14 +54,19 @@ jobs:
       - name: Run tests
         run: dotnet test --configuration Release
 
-      # 6. Push the package
-      - name: Push package
+      # 6. Publish nuget package
+      - name: Publish NuGet package to GitHub Packages
+        run: |
+          dotnet pack --configuration Release --output ./bin/Release
+          dotnet nuget push ./bin/Release/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+
+      # 7. Commit and push changes to the repo
+      - name: Commit and push changes to repository
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
           git add .
-          git commit -m "Automated package push"
+          git commit -m "Automated build, version increment, and package push"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
