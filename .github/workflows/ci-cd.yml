@@ -3,6 +3,7 @@ name: Dev CI/CD Pipeline
 # Define permissions
 permissions:
   contents: write  # Allows write access to the repository contents
+  packages: write # Allows write access for pushing packages
 
 on:
   push:
