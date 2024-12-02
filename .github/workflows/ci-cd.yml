@@ -54,13 +54,18 @@ jobs:
       - name: Run tests
         run: dotnet test --configuration Release
 
-      # 6. Publish nuget package
+      # 6. Add package source
+      - name: Add GitHub Packages as NuGet source
+        run: |
+          dotnet nuget add source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json" --name github --username ${{ github.actor }} --password ${{ secrets.GITHUB_TOKEN }}
+
+      # 7. Publish nuget package
       - name: Publish NuGet package to GitHub Packages
         run: |
           dotnet pack --configuration Release --output ./bin/Release
           dotnet nuget push ./bin/Release/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
 
-      # 7. Commit and push changes to the repo
+      # 8. Commit and push changes to the repo
       - name: Commit and push changes to repository
         run: |
           git config --global user.name "github-actions[bot]"
