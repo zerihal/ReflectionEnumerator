@@ -1,5 +1,10 @@
 name: Dev CI/CD Pipeline
 
+# Define permissions
+permissions:
+  contents: write  # Allows write access to the repository contents
+  packages: write # Allows write access for pushing packages
+
 on:
   push:
     branches:
@@ -23,9 +28,24 @@ jobs:
       # 3. Increment version
       - name: Increment version
         run: |
-          current_version=$(grep -oP '(?<=<Version>).*?(?=</Version>)' ./ReflectionEnumerator.csproj)
-          new_version=$(echo $current_version | sed -E 's/([0-9]+\.[0-9]+\.[0-9]+-alpha_)([0-9]+)/echo \1$((${BASH_REMATCH[2]} + 1))/e')
-          sed -i "s|<Version>$current_version</Version>|<Version>$new_version</Version>|g" ./ReflectionEnumerator.csproj
+          # Extract the current version
+          current_version=$(grep -oP '(?<=<Version>).*?(?=</Version>)' ./ReflectionEnumerator/ReflectionEnumerator.csproj)
+      
+          # Parse the numeric suffix after 'alpha.'
+          prefix=$(echo "$current_version" | grep -oP '^[0-9]+\.[0-9]+\.[0-9]+-alpha\.' | head -n 1)
+          suffix=$(echo "$current_version" | grep -oP '(?<=-alpha\.)[0-9]+' | head -n 1)
+      
+          # Increment the numeric suffix
+          new_suffix=$((suffix + 1))
+      
+          # Construct the new version
+          new_version="${prefix}${new_suffix}"
+      
+          # Replace the version in the .csproj file
+          sed -i "s|<Version>$current_version</Version>|<Version>$new_version</Version>|g" ./ReflectionEnumerator/ReflectionEnumerator.csproj
+      
+          # Debugging: Output new version
+          echo "Updated version: $new_version"
 
       # 4. Build the project
       - name: Build
@@ -35,13 +55,29 @@ jobs:
       - name: Run tests
         run: dotnet test --configuration Release
 
-      # 6. Push the package
-      - name: Push package
+      # 6. Add package source
+      - name: Add GitHub Packages as NuGet source
+        run: |
+          dotnet nuget add source \
+            --username "github-actions[bot]" \
+            --password "${{ secrets.GITHUB_TOKEN }}" \
+            --store-password-in-clear-text \
+            --name "github" \
+            "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+
+      # 7. Publish nuget package
+      - name: Publish NuGet package to GitHub Packages
+        run: |
+          dotnet pack ./ReflectionEnumerator/ReflectionEnumerator.csproj --configuration Release --output ./bin/Release
+          dotnet nuget push ./bin/Release/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+
+      # 8. Commit and push changes to the repo
+      - name: Commit and push changes to repository
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "Automated package push"
+          git commit -m "Automated build, version increment, and package push"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
