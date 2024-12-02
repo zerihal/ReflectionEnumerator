@@ -23,9 +23,17 @@ jobs:
       # 3. Increment version
       - name: Increment version
         run: |
+          # Extract the current version
           current_version=$(grep -oP '(?<=<Version>).*?(?=</Version>)' ./ReflectionEnumerator/ReflectionEnumerator.csproj)
-          new_version=$(echo $current_version | sed -E 's/([0-9]+\.[0-9]+\.[0-9]+-alpha_)([0-9]+)/echo \1$((${BASH_REMATCH[2]} + 1))/e')
+    
+          # Extract the numeric suffix after 'alpha.' and increment it
+          new_version=$(echo $current_version | sed -E 's/([0-9]+\.[0-9]+\.[0-9]+-alpha\.)([0-9]+)/\1$((\2 + 1))/')
+
+          # Replace the version in the .csproj file
           sed -i "s|<Version>$current_version</Version>|<Version>$new_version</Version>|g" ./ReflectionEnumerator/ReflectionEnumerator.csproj
+
+          # Debugging: Output new version
+          echo "Updated version: $new_version"
 
       # 4. Build the project
       - name: Build
