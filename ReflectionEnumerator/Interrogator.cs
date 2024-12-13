@@ -41,7 +41,7 @@ namespace ReflectionEnumerator
         {
             if (Path.GetExtension(file)?.ToLower() == ".dll" && Assembly.LoadFile(file) is Assembly assembly)
             {
-                return InterrogatedAssembly(assembly);
+                return InterrogateAssembly(assembly);
             }
 
             return null;
@@ -52,7 +52,7 @@ namespace ReflectionEnumerator
         /// </summary>
         /// <param name="assembly">The DLL file.</param>
         /// <returns>Interrogated assembly object with basic assembly information that can be further queried.</returns>
-        public IInterrogatedAssembly? InterrogatedAssembly(Assembly assembly)
+        public IInterrogatedAssembly? InterrogateAssembly(Assembly assembly)
         {
             if (assembly != null)
             {
