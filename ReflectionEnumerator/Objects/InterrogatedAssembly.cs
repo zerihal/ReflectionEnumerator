@@ -56,6 +56,9 @@ namespace ReflectionEnumerator.Objects
         public AssemblyLoadError LoadError() => _loadError;
 
         /// <inheritdoc/>
+        public void GetAssemblyObjectElements() => GetAssemblyObjectElementsAsync().Wait();
+
+        /// <inheritdoc/>
         public async Task GetAssemblyObjectElementsAsync()
         {
             foreach (var assemblyObject in AssemblyObjects)

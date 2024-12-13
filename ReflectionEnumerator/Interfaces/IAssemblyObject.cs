@@ -49,6 +49,11 @@ namespace ReflectionEnumerator.Interfaces
         IList<IReflectedConstructor> Constructors { get; }
 
         /// <summary>
+        /// Flag to indicate whether the assembly has been reflected.
+        /// </summary>
+        bool IsReflected { get; }
+
+        /// <summary>
         /// Populate refected elements - async method to get all reflected properties, methods, etc.
         /// </summary>
         /// <param name="modifiers">Reflector modifiers (e.g., public, private, or all).</param>

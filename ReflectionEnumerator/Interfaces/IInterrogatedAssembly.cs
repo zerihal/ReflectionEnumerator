@@ -36,7 +36,12 @@ namespace ReflectionEnumerator.Interfaces
         AssemblyLoadError LoadError();
 
         /// <summary>
-        /// Performs reflection on all contained assembly objects.
+        /// Performs reflection on all contained assembly objects (synchronous).
+        /// </summary>
+        void GetAssemblyObjectElements();
+
+        /// <summary>
+        /// Performs async reflection on all contained assembly objects (reflection completion event is fired once finished).
         /// </summary>
         Task GetAssemblyObjectElementsAsync();
 

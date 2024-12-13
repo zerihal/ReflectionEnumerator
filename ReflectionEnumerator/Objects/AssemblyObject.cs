@@ -33,6 +33,9 @@ namespace ReflectionEnumerator.Objects
         /// <inheritdoc/>
         public IList<IReflectedConstructor> Constructors { get; }
 
+        /// <inheritdoc/>
+        public bool IsReflected { get; private set; }
+
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -87,6 +90,7 @@ namespace ReflectionEnumerator.Objects
                 // ToDo - If there are no declared constructors then we can assume it is a default ctr
             }
 
+            IsReflected = true;
             await Task.CompletedTask;
         }
 
