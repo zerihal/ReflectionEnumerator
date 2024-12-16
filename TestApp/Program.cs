@@ -39,6 +39,9 @@ internal class Program
                 Console.WriteLine(assObj.Name);
             }
 
+            if (assembly.AssemblyReflectionError != null)
+                Console.WriteLine(assembly.AssemblyReflectionError.ErrorMessage);
+
             var serialisedJson = assembly.Serialize(SerializationType.JSON);
         }
     }
