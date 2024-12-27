@@ -15,6 +15,9 @@ namespace ReflectionEnumerator.Objects
         public string Name { get; protected set; }
 
         /// <inheritdoc/>
+        public string Namespace { get; protected set; }
+
+        /// <inheritdoc/>
         public bool NonPublic { get; protected set; }
 
         /// <inheritdoc/>
@@ -27,6 +30,7 @@ namespace ReflectionEnumerator.Objects
         public ReflectedElement(MemberInfo member)
         {
             Name = member.Name;
+            Namespace = member.DeclaringType?.Namespace ?? string.Empty;
         }
 
         /// <summary>

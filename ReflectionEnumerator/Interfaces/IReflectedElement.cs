@@ -19,6 +19,11 @@ namespace ReflectionEnumerator.Interfaces
         string Name { get; }
 
         /// <summary>
+        /// Namespace for the element.
+        /// </summary>
+        string Namespace { get; }
+
+        /// <summary>
         /// Indicates whether the element is non-public.
         /// </summary>
         bool NonPublic { get; }
