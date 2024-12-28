@@ -13,6 +13,9 @@ namespace ReflectionEnumerator.Objects
         public string Name { get; }
 
         /// <inheritdoc/>
+        public string Namespace { get; }
+
+        /// <inheritdoc/>
         public AssemblyObjectType ObjectType { get; }
 
         /// <inheritdoc/>
@@ -50,6 +53,7 @@ namespace ReflectionEnumerator.Objects
             Constructors = new List<IReflectedConstructor>();
 
             Name = type.Name;
+            Namespace = type.Namespace ?? string.Empty;
             ObjectType = InterrogatorHelper.GetAssemblyObjectType(_assemblyObjectType, out var modifier);
             AccessModifer = modifier; 
         }
