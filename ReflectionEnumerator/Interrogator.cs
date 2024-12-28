@@ -36,12 +36,27 @@ namespace ReflectionEnumerator
         /// Interrogates an assembly (.dll file).
         /// </summary>
         /// <param name="file">The DLL file.</param>
+        /// <param name="error">Interrogation error (if any).</param>
         /// <returns>Interrogated assembly object with basic assembly information that can be further queried.</returns>
-        public IInterrogatedAssembly? InterrogateAssembly(string file)
+        public IInterrogatedAssembly? InterrogateAssembly(string file, out string error)
         {
-            if (Path.GetExtension(file)?.ToLower() == ".dll" && Assembly.LoadFile(file) is Assembly assembly)
+            error = string.Empty;
+
+            if (Path.GetExtension(file)?.ToLower() == ".dll")
             {
-                return InterrogateAssembly(assembly);
+                try
+                {
+                    if (Assembly.LoadFile(file) is Assembly assembly)
+                        return InterrogateAssembly(assembly);
+                }
+                catch (Exception ex)
+                {
+                    error = $"Assembly load error: {ex.Message}";
+                } 
+            }
+            else
+            {
+                error = "Invalid file type";
             }
 
             return null;

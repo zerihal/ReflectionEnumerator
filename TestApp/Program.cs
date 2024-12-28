@@ -12,7 +12,7 @@ internal class Program
     private static void Main(string[] args)
     {
         var interrogator = new Interrogator(new ReflectorSettings(ReflectorModifiers.All));
-        var interrogatedAssembly = interrogator.InterrogateAssembly(TestAssembly);
+        var interrogatedAssembly = interrogator.InterrogateAssembly(TestAssembly, out _);
 
         if (interrogatedAssembly != null )
         {
