@@ -62,7 +62,7 @@ jobs:
 
           test_func
           test_func_res=$?
-          echo "Test func result: ($test_func_res)"
+          #echo "Test func result: ($test_func_res)"
           
           # Get version from file
           if [ -f ReleaseVersion.txt ]; then
