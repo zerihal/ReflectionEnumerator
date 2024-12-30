@@ -52,6 +52,9 @@ jobs:
           
           # Replace the version in the .csproj file
           sed -i "s|<Version>$current_version</Version>|<Version>$new_version</Version>|g" ./ReflectionEnumerator/ReflectionEnumerator.csproj
+
+          # Output the new version
+          echo "Updated version: $new_version"
           
           # Set the output variable
           echo "new_version=$new_version" >> $GITHUB_OUTPUT
