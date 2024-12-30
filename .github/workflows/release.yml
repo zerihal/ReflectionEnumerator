@@ -53,8 +53,8 @@ jobs:
           # Replace the version in the .csproj file
           sed -i "s|<Version>$current_version</Version>|<Version>$new_version</Version>|g" ./ReflectionEnumerator/ReflectionEnumerator.csproj
           
-          # Output the new version
-          echo "Updated version: $new_version"
+          # Set the output variable
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
 
       # 4. Build the project
       - name: Build
@@ -88,3 +88,16 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 9. Update release version repository variable
+      - name: Update RELEASEVERSION repository variable
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          NEW_VERSION: ${{ steps.increment_version.outputs.new_version }}
+        run: |
+          curl -X PATCH \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/$REPO/actions/variables/RELEASEVERSION \
+            -d "{\"name\":\"RELEASEVERSION\",\"value\":\"$NEW_VERSION\"}"
