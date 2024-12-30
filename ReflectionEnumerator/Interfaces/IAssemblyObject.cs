@@ -14,6 +14,11 @@ namespace ReflectionEnumerator.Interfaces
         string Name { get; }
 
         /// <summary>
+        /// Namespace for the element.
+        /// </summary>
+        string Namespace { get; }
+
+        /// <summary>
         /// .NET object type.
         /// </summary>
         AssemblyObjectType ObjectType { get; }
@@ -47,6 +52,11 @@ namespace ReflectionEnumerator.Interfaces
         /// Object constructor(s).
         /// </summary>
         IList<IReflectedConstructor> Constructors { get; }
+
+        /// <summary>
+        /// Flag to indicate whether the assembly has been reflected.
+        /// </summary>
+        bool IsReflected { get; }
 
         /// <summary>
         /// Populate refected elements - async method to get all reflected properties, methods, etc.

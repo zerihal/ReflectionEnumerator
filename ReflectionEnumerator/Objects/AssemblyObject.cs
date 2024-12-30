@@ -13,6 +13,9 @@ namespace ReflectionEnumerator.Objects
         public string Name { get; }
 
         /// <inheritdoc/>
+        public string Namespace { get; }
+
+        /// <inheritdoc/>
         public AssemblyObjectType ObjectType { get; }
 
         /// <inheritdoc/>
@@ -33,6 +36,9 @@ namespace ReflectionEnumerator.Objects
         /// <inheritdoc/>
         public IList<IReflectedConstructor> Constructors { get; }
 
+        /// <inheritdoc/>
+        public bool IsReflected { get; private set; }
+
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -47,6 +53,7 @@ namespace ReflectionEnumerator.Objects
             Constructors = new List<IReflectedConstructor>();
 
             Name = type.Name;
+            Namespace = type.Namespace ?? string.Empty;
             ObjectType = InterrogatorHelper.GetAssemblyObjectType(_assemblyObjectType, out var modifier);
             AccessModifer = modifier; 
         }
@@ -87,6 +94,7 @@ namespace ReflectionEnumerator.Objects
                 // ToDo - If there are no declared constructors then we can assume it is a default ctr
             }
 
+            IsReflected = true;
             await Task.CompletedTask;
         }
 
