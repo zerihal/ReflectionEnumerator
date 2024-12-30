@@ -37,6 +37,8 @@ jobs:
           # Get the year and day of the year for the build number
           year=$(date +%y)
           day_of_year=$(date +%j)
+
+          echo "Repository variable RELEASEVERSION is ${{ secrets.RELEASEVERSION }}"
           
           # Construct the new version with the `yyDDD` build number
           new_version="${base_version}.${year}${day_of_year}"
