@@ -55,9 +55,6 @@ jobs:
 
           # Output the new version
           echo "Updated version: $new_version"
-          
-          # Set the output variable
-          echo "new_version=$new_version" >> $GITHUB_OUTPUT
 
       # 4. Build the project
       - name: Build
@@ -76,11 +73,13 @@ jobs:
             --store-password-in-clear-text \
             --name "github" \
             "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+
       # 7. Publish nuget package
       - name: Publish NuGet package to GitHub Packages
         run: |
           dotnet pack ./ReflectionEnumerator/ReflectionEnumerator.csproj --configuration Release --output ./bin/Release
           dotnet nuget push ./bin/Release/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+
       # 8. Commit and push changes to the repo
       - name: Commit and push changes to repository
         run: |
@@ -91,16 +90,3 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # 9. Update release version repository variable
-      - name: Update RELEASEVERSION repository variable
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          NEW_VERSION: ${{ steps.increment_version.outputs.new_version }}
-        run: |
-          curl -X PATCH \
-            -H "Authorization: token $GITHUB_TOKEN" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/$REPO/actions/variables/RELEASEVERSION \
-            -d "{\"name\":\"RELEASEVERSION\",\"value\":\"$NEW_VERSION\"}"
