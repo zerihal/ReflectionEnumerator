@@ -12,7 +12,7 @@
     <RepositoryUrl>https://github.com/zerihal/ReflectionEnumerator</RepositoryUrl>
     <NeutralLanguage>en-GB</NeutralLanguage>
     <PackageId>Reflection.Enumerator</PackageId>
-    <Version>1.0.2.24367</Version>
+    <Version>1.0.2.24368</Version>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <AssemblyVersion>1.0.2</AssemblyVersion>
     <FileVersion>1.0.2.1</FileVersion>
