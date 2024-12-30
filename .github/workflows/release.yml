@@ -28,25 +28,32 @@ jobs:
       # 3. Increment version
       - name: Increment version
         run: |
-          # Extract the current version
+          # Extract the current version from the .csproj file
           current_version=$(grep -oP '(?<=<Version>).*?(?=</Version>)' ./ReflectionEnumerator/ReflectionEnumerator.csproj)
           
           # Remove '-alpha.x' suffix if it exists
           base_version=$(echo "$current_version" | sed -E 's/-alpha\.[0-9]+//')
           
-          # Get the year and day of the year for the build number
-          year=$(date +%y)
-          day_of_year=$(date +%j)
-
-          echo "Repository variable RELEASEVERSION is ${{ vars.RELEASEVERSION }}"
-          
-          # Construct the new version with the `yyDDD` build number
-          new_version="${base_version}.${year}${day_of_year}"
+          # Check if the version is in x.x.x.x format
+          if [[ "$base_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            # Split the version into its components
+            IFS='.' read -r major minor patch build <<< "$base_version"
+            # Increment the build number
+            build=$((build + 1))
+            # Construct the new version
+            new_version="$major.$minor.$patch.$build"
+          elif [[ "$base_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            # Version is in x.x.x format, append .0 to make it x.x.x.0
+            new_version="$base_version.0"
+          else
+            echo "Error: Version format not recognized. Exiting."
+            exit 1
+          fi
           
           # Replace the version in the .csproj file
           sed -i "s|<Version>$current_version</Version>|<Version>$new_version</Version>|g" ./ReflectionEnumerator/ReflectionEnumerator.csproj
           
-          # Debugging: Output new version
+          # Output the new version
           echo "Updated version: $new_version"
 
       # 4. Build the project
