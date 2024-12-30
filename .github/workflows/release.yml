@@ -28,6 +28,15 @@ jobs:
       # 3. Increment version
       - name: Increment version
         run: |
+          # Get version from file
+          if [ -f ReleaseVersion.txt ]; then
+            build_number=$(cat ReleaseVersion.txt)
+          else
+            build_number=0
+          fi
+          echo "Current build number: $build_number"
+          echo "build_number=$build_number" >> $GITHUB_ENV
+        
           # Extract the current version from the .csproj file
           current_version=$(grep -oP '(?<=<Version>).*?(?=</Version>)' ./ReflectionEnumerator/ReflectionEnumerator.csproj)
           
