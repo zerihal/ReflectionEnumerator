@@ -64,22 +64,6 @@ jobs:
           fi
           echo "Current build number: $build_number"
           echo "build_number=$build_number" >> $GITHUB_ENV
-
-          # Test section
-          # Compare the base version with the build number
-          compare_versions "1.0.3" "1.0.2.21"
-          comparison_result=$?
-
-          if (( comparison_result == 1 )); then
-            echo "Base version ($base_version) is greater than build number ($build_number)."
-            # Implement logic for when the base version is greater
-          elif (( comparison_result == 2 )); then
-            echo "Build number ($build_number) is greater than base version ($base_version)."
-            # Implement logic for when the build number is greater
-          else
-            echo "Base version ($base_version) and build number ($build_number) are equal."
-            # Implement logic for when the versions are equal
-          fi
         
           # Extract the current version from the .csproj file
           current_version=$(grep -oP '(?<=<Version>).*?(?=</Version>)' ./ReflectionEnumerator/ReflectionEnumerator.csproj)
