@@ -96,7 +96,6 @@ jobs:
 
       # 9. Update version variable
       - name: Update RELEASEVERSION repository variable
-        shell: bash
         run: |
           curl -X PATCH \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
