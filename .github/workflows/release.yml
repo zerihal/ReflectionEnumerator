@@ -28,7 +28,6 @@ jobs:
       # 3. Increment version
       - name: Increment version
         run: |
-
           # Define the compare_versions function
           compare_versions() {
             local version1="$1"
@@ -68,7 +67,7 @@ jobs:
 
           # Test section
           # Compare the base version with the build number
-          compare_versions "1.0.3" "$build_number"
+          compare_versions "1.0.3" "1.0.2.21"
           comparison_result=$?
 
           if (( comparison_result == 1 )); then
