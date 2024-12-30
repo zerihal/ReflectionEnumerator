@@ -30,7 +30,7 @@ jobs:
         run: |
           # Get version from file
           if [ -f ReleaseVersion.txt ]; then
-            build_number=$(cat version.txt)
+            build_number=$(cat ReleaseVersion.txt)
           else
             build_number=0
           fi
