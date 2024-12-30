@@ -57,12 +57,11 @@ jobs:
           }
 
           test_func() {
-            return "Test OK"
+            echo "Test OK"
           }
 
-          test_func 0
-          #test_func_res=$?
-          #echo "Test func result: ($test_func_res)"
+          result = $(test_func)
+          echo "Function result: $result"
           
           # Get version from file
           if [ -f ReleaseVersion.txt ]; then
