@@ -100,7 +100,7 @@ jobs:
           curl -X PATCH \
             -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/$REPO/actions/variables/TEST \
+            https://api.github.com/repos/$REPO/actions/variables \
             -d "{\"name\":\"TEST\",\"value\":\"2\"}"
           env:
             REPO: ${{ github.repository }}
