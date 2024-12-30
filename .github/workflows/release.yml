@@ -44,7 +44,7 @@ jobs:
             new_version="$major.$minor.$patch.$build"
           elif [[ "$base_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             # Version is in x.x.x format, append .0 to make it x.x.x.0
-            new_version="$base_version.0"
+            new_version="$base_version.1"
           else
             echo "Error: Version format not recognized. Exiting."
             exit 1
@@ -55,9 +55,6 @@ jobs:
 
           # Output the new version
           echo "Updated version: $new_version"
-
-          # Set the output variable
-          echo "new_version=$new_version" >> $GITHUB_OUTPUT
 
       # 4. Build the project
       - name: Build
@@ -93,15 +90,3 @@ jobs:
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      # 9. Update version variable
-      - name: Update RELEASEVERSION repository variable
-        run: |
-          curl -X PATCH \
-            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/$REPO/actions/variables \
-            -d "{\"name\":\"TEST\",\"value\":\"2\"}"
-          env:
-            REPO: ${{ github.repository }}
-            # NEW_VERSION: ${{ steps.increment_version.outputs.new_version }}
