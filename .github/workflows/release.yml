@@ -62,14 +62,14 @@ jobs:
           }
           
           # Compare the base version with the build number
-          comparison_result=$(compare_versions "1.0.1" "1.0.2.21")
+          comparison_result=$(compare_versions "1.0.2" "1.0.2.21")
           
           if [[ "$comparison_result" == "1" ]]; then
-            echo "Base version is greater than build number."
+            echo "Version 1 is greater than version 2."
           elif [[ "$comparison_result" == "2" ]]; then
-            echo "Build number is greater than base version."
+            echo "Version 2 is greater than version 1."
           else
-            echo "Base version and build number are equal."
+            echo "Versions are equal."
           fi
           
           # Get version from file
@@ -148,8 +148,9 @@ jobs:
       # 7. Publish nuget package
       - name: Publish NuGet package to GitHub Packages
         run: |
-          dotnet pack ./ReflectionEnumerator/ReflectionEnumerator.csproj --configuration Release --output ./bin/Release
-          dotnet nuget push ./bin/Release/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+          #dotnet pack ./ReflectionEnumerator/ReflectionEnumerator.csproj --configuration Release --output ./bin/Release
+          #dotnet nuget push ./bin/Release/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+          echo "Ignored nuget publish"
 
       # 8. Commit and push changes to the repo
       - name: Commit and push changes to repository
