@@ -137,8 +137,8 @@ jobs:
       # 7. Publish nuget package
       - name: Publish NuGet package to GitHub Packages
         run: |
-          #dotnet pack ./ReflectionEnumerator/ReflectionEnumerator.csproj --configuration Release --output ./bin/Release
-          #dotnet nuget push ./bin/Release/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+          dotnet pack ./ReflectionEnumerator/ReflectionEnumerator.csproj --configuration Release --output ./bin/Release
+          dotnet nuget push ./bin/Release/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
 
       # 8. Commit and push changes to the repo
       - name: Commit and push changes to repository
