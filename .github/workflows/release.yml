@@ -25,20 +25,6 @@ jobs:
         with:
           dotnet-version: 8.0
 
-      - name: Define and call function in a single step
-        run: |
-          #!/bin/bash
-          set -e
-      
-          # Define the function
-          test_func() {
-            echo "Test 1 OK"
-          }
-
-          # Call the function
-          result=$(test_func)
-          echo "Function output: $result"
-
       # 3. Increment version
       - name: Increment version
         run: |
@@ -50,9 +36,18 @@ jobs:
             echo "Test 2 OK"
           }
 
+          test-funcc() {
+            return 0
+          }
+
           # Call the function
           resultb=$(test_funcb)
           echo "Function output: $resultb"
+
+          resultc=$(test_funcc)
+          exit_status=$?
+
+          echo "Function exit status: $exit_status"
           
           # Get version from file
           if [ -f ReleaseVersion.txt ]; then
