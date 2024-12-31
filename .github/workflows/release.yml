@@ -1,0 +1,152 @@
+name: Release CI/CD Pipeline
+
+# Define permissions
+permissions:
+  contents: write  # Allows write access to the repository contents
+  packages: write # Allows write access for pushing packages
+
+on:
+  push:
+    branches:
+      - Release
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout the repository
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2. Set up .NET
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 8.0
+
+      # 3. Increment version
+      - name: Increment version
+        run: |
+          #!/bin/bash
+          set -e
+
+          # Define the compare_versions function
+          compare_versions() {
+            local version1="$1"
+            local version2="$2"
+          
+            # Convert versions to arrays of integers
+            IFS='.' read -r -a v1 <<< "$version1"
+            IFS='.' read -r -a v2 <<< "$version2"
+          
+            # Determine the maximum length of the two version arrays
+            local max_length=$(( ${#v1[@]} > ${#v2[@]} ? ${#v1[@]} : ${#v2[@]} ))
+          
+            # Compare each component
+            for ((i = 0; i < max_length; i++)); do
+              # Default to 0 if the component is missing
+              local v1_component=${v1[$i]:-0}
+              local v2_component=${v2[$i]:-0}
+          
+              if (( v1_component > v2_component )); then
+                echo "1"  # version1 is greater
+                return
+              elif (( v1_component < v2_component )); then
+                echo "2"  # version2 is greater
+                return
+              fi
+            done
+          
+            echo "0"  # versions are equal
+          }
+          
+          # Get version from file
+          if [ -f ReleaseVersion.txt ]; then
+            build_number=$(cat ReleaseVersion.txt)
+          else
+            build_number=0
+          fi
+          echo "Current build number: $build_number"
+          echo "build_number=$build_number" >> $GITHUB_ENV
+        
+          # Extract the current version from the .csproj file
+          current_version=$(grep -oP '(?<=<Version>).*?(?=</Version>)' ./ReflectionEnumerator/ReflectionEnumerator.csproj)
+          
+          # Remove '-alpha.x' suffix if it exists
+          base_version=$(echo "$current_version" | sed -E 's/-alpha\.[0-9]+//')
+          
+          # Check if the version is in x.x.x.x format
+          if [[ "$base_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            # Split the version into its components
+            IFS='.' read -r major minor patch build <<< "$base_version"
+            # Increment the build number
+            build=$((build + 1))
+            # Construct the new version
+            new_version="$major.$minor.$patch.$build"
+          elif [[ "$base_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            # Compare the base version with the build number
+            comparison_result=$(compare_versions "$base_version" "$build_number")
+          
+            if [[ "$comparison_result" == "1" ]]; then
+              echo "Base (merged) version is greater than release version - updating version with build number 0."
+              new_version="$base_version.0"
+            else
+              echo "Release version is equal or greater than base version - incrementing build number."
+              # Split the file version into its components
+              IFS='.' read -r major minor patch build <<< "$build_number"
+              # Increment the build number
+              build=$((build + 1))
+              # Construct the new version
+              new_version="$major.$minor.$patch.$build"
+            fi
+          else
+            echo "Error: Version format not recognized. Exiting."
+            exit 1
+          fi
+          
+          # Replace the version in the .csproj file
+          sed -i "s|<Version>$current_version</Version>|<Version>$new_version</Version>|g" ./ReflectionEnumerator/ReflectionEnumerator.csproj
+          
+          # Update version number in release version file
+          if [ -f ReleaseVersion.txt ]; then
+            echo "$new_version" > ReleaseVersion.txt
+          fi
+
+          # Output the new version
+          echo "Updated version: $new_version"
+
+      # 4. Build the project
+      - name: Build
+        run: dotnet build --configuration Release
+
+      # 5. Run tests
+      - name: Run tests
+        run: dotnet test --configuration Release
+
+      # 6. Add package source
+      - name: Add GitHub Packages as NuGet source
+        run: |
+          dotnet nuget add source \
+            --username "github-actions[bot]" \
+            --password "${{ secrets.GITHUB_TOKEN }}" \
+            --store-password-in-clear-text \
+            --name "github" \
+            "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+
+      # 7. Publish nuget package
+      - name: Publish NuGet package to GitHub Packages
+        run: |
+          #dotnet pack ./ReflectionEnumerator/ReflectionEnumerator.csproj --configuration Release --output ./bin/Release
+          #dotnet nuget push ./bin/Release/*.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }}
+
+      # 8. Commit and push changes to the repo
+      - name: Commit and push changes to repository
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Automated build, version increment, and package push"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

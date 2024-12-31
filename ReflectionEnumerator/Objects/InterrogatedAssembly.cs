@@ -29,6 +29,12 @@ namespace ReflectionEnumerator.Objects
         /// <inheritdoc/>
         public IList<IAssemblyObject> AssemblyObjects { get; }
 
+        /// <inheritdoc/>
+        public bool HasEntryPoint { get; }
+
+        /// <inheritdoc/>
+        public ReflectionError? AssemblyReflectionError { get; private set; } = null;
+
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -42,6 +48,7 @@ namespace ReflectionEnumerator.Objects
                 AssemblyObjects = new List<IAssemblyObject>();
                 Name = assembly.GetName()?.Name ?? string.Empty;
                 Version = assembly.GetName()?.Version ?? new Version(0, 0, 0, 0);
+                HasEntryPoint = assembly.EntryPoint != null;
 
                 foreach (var aType in assembly.GetTypes())
                     AssemblyObjects.Add(new AssemblyObject(aType));
@@ -56,14 +63,34 @@ namespace ReflectionEnumerator.Objects
         public AssemblyLoadError LoadError() => _loadError;
 
         /// <inheritdoc/>
+        public void GetAssemblyObjectElements() => GetAssemblyObjectElementsAsync().Wait();
+
+        /// <inheritdoc/>
         public async Task GetAssemblyObjectElementsAsync()
         {
+            AssemblyReflectionError = null;
+            var errors = 0;
+
             foreach (var assemblyObject in AssemblyObjects)
             {
-                await assemblyObject.PopulateReflectedElements(_modifiers);
+                try
+                {
+                    await assemblyObject.PopulateReflectedElements(_modifiers);
+                }
+                catch
+                {
+                    errors++;
+                }
             }
 
-            OnReflectionComplete(new ReflectionCompleteEventArgs(AssemblyObjects.Count));
+            if (errors > 0)
+            {
+                var message = HasEntryPoint ? "Assembly may be invalid as a EXE or renamed DLL" : 
+                    "Reflection errors encountered";
+                AssemblyReflectionError = new ReflectionError(errors, AssemblyObjects.Count, message);
+            }
+
+            OnReflectionComplete(new ReflectionCompleteEventArgs(AssemblyObjects.Count - errors));
         }
 
         /// <inheritdoc/>

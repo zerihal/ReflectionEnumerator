@@ -21,4 +21,22 @@
     <ProjectReference Include="..\ReflectionEnumerator\ReflectionEnumerator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Resources\Microsoft.Office.Tools.Common.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Microsoft.Office.Tools.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\netmsg.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Query.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\System.IO.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

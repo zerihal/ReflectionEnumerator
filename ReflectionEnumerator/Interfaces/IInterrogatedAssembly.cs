@@ -30,13 +30,29 @@ namespace ReflectionEnumerator.Interfaces
         IList<IAssemblyObject> AssemblyObjects { get; }
 
         /// <summary>
+        /// Reflection error (if any).
+        /// </summary>
+        ReflectionError? AssemblyReflectionError { get; }
+
+        /// <summary>
         /// Gets assembly load error (if no error then this will be indicated in the record).
         /// </summary>
         /// <returns>Assembly load error record.</returns>
         AssemblyLoadError LoadError();
 
         /// <summary>
-        /// Performs reflection on all contained assembly objects.
+        /// Flag to indicate whether the assembly has an entry point, which may mean that it is
+        /// either a EXE DLL or renamed DLL as a normal DLL would not normally have an entry point.
+        /// </summary>
+        bool HasEntryPoint { get; }
+
+        /// <summary>
+        /// Performs reflection on all contained assembly objects (synchronous).
+        /// </summary>
+        void GetAssemblyObjectElements();
+
+        /// <summary>
+        /// Performs async reflection on all contained assembly objects (reflection completion event is fired once finished).
         /// </summary>
         Task GetAssemblyObjectElementsAsync();
 
