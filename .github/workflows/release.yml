@@ -40,14 +40,57 @@ jobs:
             return 0
           }
 
+          # Define the compare_versions function
+          compare_versions() {
+            local version1="$1"
+            local version2="$2"
+
+            # Convert versions to arrays of integers
+            IFS='.' read -r -a v1 <<< "$version1"
+            IFS='.' read -r -a v2 <<< "$version2"
+
+            # Determine the maximum length of the two version arrays
+            local max_length=$(( ${#v1[@]} > ${#v2[@]} ? ${#v1[@]} : ${#v2[@]} ))
+
+            # Compare each component
+            for ((i = 0; i < max_length; i++)); do
+              # Default to 0 if the component is missing
+              local v1_component=${v1[$i]:-0}
+              local v2_component=${v2[$i]:-0}
+
+              if (( v1_component > v2_component )); then
+                return 1  # version1 is greater
+              elif (( v1_component < v2_component )); then
+                return 2  # version2 is greater
+              fi
+            done
+
+            return 0  # versions are equal
+          }
+
           # Call the function
-          resultb=$(test_funcb)
-          echo "Function output: $resultb"
+          #resultb=$(test_funcb)
+          #echo "Function output: $resultb"
 
-          resultc=$(test_funcc)
-          exit_status=$?
+          #resultc=$(test_funcc)
+          #exit_status=$?
 
-          echo "Function exit status: $exit_status"
+          #echo "Function exit status: $exit_status"
+
+          # Compare the base version with the build number
+          compare_versions "1.0.3" "1.0.2.21"
+          comparison_result=$?
+
+          if (( comparison_result == 1 )); then
+            echo "Base version is greater than build number."
+            # Implement logic for when the base version is greater
+          elif (( comparison_result == 2 )); then
+            echo "Build number is greater than base version."
+            # Implement logic for when the build number is greater
+          else
+            echo "Base version and build number are equal."
+            # Implement logic for when the versions are equal
+          fi
           
           # Get version from file
           if [ -f ReleaseVersion.txt ]; then
