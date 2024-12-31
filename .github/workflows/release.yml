@@ -98,7 +98,7 @@ jobs:
           elif [[ "$base_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             # Compare the base version with the build number
             comparison_result=$(compare_versions "$base_version" "$build_number")
-
+          
             if [[ "$comparison_result" == "1" ]]; then
               echo "Base version is greater than release version - updating version with build number 0."
               new_version="$base_version.0"
@@ -122,6 +122,7 @@ jobs:
           # Update version number in release version file
           if [ -f ReleaseVersion.txt ]; then
             echo "$new_version" > ReleaseVersion.txt
+          fi
 
           # Output the new version
           echo "Updated version: $new_version"
