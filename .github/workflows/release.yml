@@ -25,16 +25,23 @@ jobs:
         with:
           dotnet-version: 8.0
 
-      # 3. Increment version
-      - name: Increment version
+      - name: Define and call function in a single step
         run: |
+          #!/bin/bash
+          set -e
+      
+          # Define the function
           test_func() {
             echo "Test OK"
           }
 
-          result = $(test_func)
-          echo "Function result: $result"
-          
+          # Call the function
+          result=$(test_func)
+          echo "Function output: $result"
+
+      # 3. Increment version
+      - name: Increment version
+        run: |          
           # Get version from file
           if [ -f ReleaseVersion.txt ]; then
             build_number=$(cat ReleaseVersion.txt)
@@ -86,7 +93,6 @@ jobs:
 
           # Output the new version
           echo "Updated version: $new_version"
-        shell: bash
 
       # 4. Build the project
       - name: Build
