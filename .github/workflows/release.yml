@@ -62,7 +62,7 @@ jobs:
           }
           
           # Compare the base version with the build number
-          comparison_result=$(compare_versions "1.0.3" "1.0.2.21")
+          comparison_result=$(compare_versions "1.0.2.21" "1.0.2.21")
           
           if [[ "$comparison_result" == "1" ]]; then
             echo "Version 1 is greater than version 2."
