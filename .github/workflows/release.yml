@@ -30,15 +30,6 @@ jobs:
         run: |
           #!/bin/bash
           set -e
-      
-          # Define the function
-          test_funcb() {
-            echo "Test 2 OK"
-          }
-
-          test_funcc() {
-            return 0
-          }
 
           # Define the compare_versions function
           compare_versions() {
@@ -71,7 +62,7 @@ jobs:
           }
           
           # Compare the base version with the build number
-          comparison_result=$(compare_versions "1.0.3" "1.0.2.21")
+          comparison_result=$(compare_versions "1.0.2" "1.0.2.21")
           
           if [[ "$comparison_result" == "1" ]]; then
             echo "Base version is greater than build number."
@@ -80,15 +71,6 @@ jobs:
           else
             echo "Base version and build number are equal."
           fi
-
-          # Call the function
-          #resultb=$(test_funcb)
-          #echo "Function output: $resultb"
-
-          #resultc=$(test_funcc)
-          #exit_status=$?
-
-          #echo "Function exit status: $exit_status"
           
           # Get version from file
           if [ -f ReleaseVersion.txt ]; then
@@ -115,22 +97,20 @@ jobs:
             new_version="$major.$minor.$patch.$build"
           elif [[ "$base_version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
             # Compare the base version with the build number
-            compare_versions "$base_version" "$build_number"
-            comparison_result=$?
+            comparison_result=$(compare_versions "$base_version" "$build_number")
 
-            if (( comparison_result == 1 )); then
-              echo "Base version ($base_version) is greater than build number ($build_number)."
-              # Implement logic for when the base version is greater
-            elif (( comparison_result == 2 )); then
-              echo "Build number ($build_number) is greater than base version ($base_version)."
-              # Implement logic for when the build number is greater
+            if [[ "$comparison_result" == "1" ]]; then
+              echo "Base version is greater than release version - updating version with build number 0."
+              new_version="$base_version.0"
             else
-              echo "Base version ($base_version) and build number ($build_number) are equal."
-              # Implement logic for when the versions are equal
+              echo "Release version is equal or greater than base version - incrementing build number."
+              # Split the file version into its components
+              IFS='.' read -r major minor patch build <<< "$build_number"
+              # Increment the build number
+              build=$((build + 1))
+              # Construct the new version
+              new_version="$major.$minor.$patch.$build"
             fi
-            
-            # Version is in x.x.x format, append .0 to make it x.x.x.0
-            new_version="$base_version.1"
           else
             echo "Error: Version format not recognized. Exiting."
             exit 1
@@ -138,6 +118,10 @@ jobs:
           
           # Replace the version in the .csproj file
           sed -i "s|<Version>$current_version</Version>|<Version>$new_version</Version>|g" ./ReflectionEnumerator/ReflectionEnumerator.csproj
+          
+          # Update version number in release version file
+          if [ -f ReleaseVersion.txt ]; then
+            echo "$new_version" > ReleaseVersion.txt
 
           # Output the new version
           echo "Updated version: $new_version"
