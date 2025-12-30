@@ -1,6 +1,6 @@
 # Reflection Enumerator
 
-Reflection Enumerator uses reflection on a target .NET assembly (.dll file) to interrogate contained classes, methods, properties, etc and return an interrogated assembly object that can be easily used to view internal elements and generate a formatted / serialised JSON file for consumption in other applications.
+Reflection Enumerator uses reflection on a target .NET assembly (.dll file) to interrogate contained classes, methods, properties, etc and return an interrogated assembly object that can be easily used to view internal elements and generate a formatted / serialised JSON file for consumption in other applications, such as in the [Reflection Enumerator Web UI](https://github.com/zerihal/ReflectionEnumeratorWebUI) sample web app.
 
 ## Example Usage
 
