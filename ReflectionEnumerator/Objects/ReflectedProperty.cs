@@ -19,6 +19,9 @@ namespace ReflectionEnumerator.Objects
         /// <inheritdoc/>
         public string PropertyType { get; private set; }
 
+        /// <inheritdoc/>
+        public object? DefaultValue { get; private set; }
+
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -41,6 +44,19 @@ namespace ReflectionEnumerator.Objects
             {
                 HasSetter = true;
                 PublicSetter = setter.IsPublic;
+            }
+
+            try
+            {
+                if (propertyInfo.CanRead && propertyInfo.DeclaringType is Type propType)
+                {
+                    var instance = Activator.CreateInstance(propType);
+                    DefaultValue = propertyInfo.GetValue(instance);
+                }
+            }
+            catch
+            {
+                // Just swallow - default value null.
             }
         }
     }

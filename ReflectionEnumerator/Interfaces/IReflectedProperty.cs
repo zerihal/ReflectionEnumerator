@@ -19,5 +19,10 @@
         /// Property type as string.
         /// </summary>
         string PropertyType { get; }
+
+        /// <summary>
+        /// Default value of the property (if present and can be determined), otherwise null.
+        /// </summary>
+        object? DefaultValue { get; }
     }
 }
