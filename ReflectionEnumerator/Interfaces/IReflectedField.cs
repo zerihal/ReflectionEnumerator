@@ -9,5 +9,10 @@
         /// Field type as string.
         /// </summary>
         string FieldType { get; }
+
+        /// <summary>
+        /// Default value of the field (if present and can be determined), otherwise null.
+        /// </summary>
+        object? DefaultValue { get; }
     }
 }

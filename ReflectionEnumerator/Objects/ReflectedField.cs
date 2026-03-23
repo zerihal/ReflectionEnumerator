@@ -12,6 +12,9 @@ namespace ReflectionEnumerator.Objects
         /// <inheritdoc/>
         public string FieldType { get; private set; }
 
+        /// <inheritdoc/>
+        public object? DefaultValue { get; private set; }
+
         /// <summary>
         /// Default constructor.
         /// </summary>
@@ -25,6 +28,26 @@ namespace ReflectionEnumerator.Objects
         {
             FieldType = GetType(fieldInfo);
             NonPublic = !fieldInfo.IsPublic;
+
+            try
+            {
+                if (fieldInfo.IsLiteral && !fieldInfo.IsInitOnly)
+                {
+                    DefaultValue = fieldInfo.GetRawConstantValue();
+                }
+                else
+                {
+                    if (fieldInfo.DeclaringType is Type fieldType)
+                    {
+                        var instance = Activator.CreateInstance(fieldType);
+                        DefaultValue = fieldInfo.GetValue(instance);
+                    }
+                }
+            }
+            catch
+            {
+                // Just swallow - default value null.
+            }
         }
     }
 }
