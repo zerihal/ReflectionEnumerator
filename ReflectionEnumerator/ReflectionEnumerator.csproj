@@ -13,11 +13,27 @@
     <RepositoryUrl>https://github.com/zerihal/ReflectionEnumerator</RepositoryUrl>
     <NeutralLanguage>en-GB</NeutralLanguage>
     <PackageId>Reflection.Enumerator</PackageId>
-    <Version>2.0.0-alpha.0</Version>
+    <Version>2.0.0-alpha.1</Version>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <AssemblyVersion>2.0.0</AssemblyVersion>
     <FileVersion>2.0.0.1</FileVersion>
+    <PackageTags>.NET;Reflection;Reflection-API;Tool;Reflection mapping;Assembly analysis</PackageTags>
+    <Copyright>JPS</Copyright>
+    <PackageProjectUrl>https://github.com/zerihal/ReflectionEnumerator</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Text.Encodings.Web" Version="10.0.5" />
