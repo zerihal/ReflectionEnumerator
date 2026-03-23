@@ -59,10 +59,10 @@ jobs:
 
       # 5. Run tests
       - name: Run tests for .NET 8
-        run: dotnet test --no-build --configuration Release -f net8.0
+        run: dotnet test --configuration Release -f net8.0
       
       - name: Run tests for .NET 10
-        run: dotnet test --no-build --configuration Release -f net10.0
+        run: dotnet test --configuration Release -f net10.0
 
       # 6. Add package source
       - name: Add GitHub Packages as NuGet source
